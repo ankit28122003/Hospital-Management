@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Departments - LifeCare Hospital</title>
+  <style>
+    nav {
+        background: #0077b6;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .brand {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .nav-toggle {
+        display: none;
+        font-size: 1.8rem;
+        color: white;
+        cursor: pointer;
+        background: none;
+        border: none;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+        .nav-toggle {
+            display: block;
+        }
+
+        .nav-links {
+            flex-direction: column;
+            width: 100%;
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .nav-links.show {
+            display: flex;
+        }
+
+        .nav-links li {
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+    }
+</style>
+</head>
+<body style="margin:0; font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#f4f8fb; color:#333;">
+
+  <!-- Navbar -->
+  <nav>
+    <div class="brand">LifeCare</div>
+    <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="department.html">Departments</a></li>
+        <li><a href="doctors.html">Doctors</a></li>
+        <li><a href="appointments.html">Appointments</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+  <!-- Departments Content -->
+  <section style="padding:4rem 2rem; background:white; text-align:center;">
+    <h2 style="color:#0077b6;">Our Departments</h2>
+    <ul style="list-style:none; display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:2rem; margin:2rem 0;">
+      <li style="background:#eaf6f9; padding:2rem; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+        <h3 style="color:#0077b6;">Cardiology</h3>
+        <p>Expert care for heart health, including diagnostics and surgery.</p>
+      </li>
+      <li style="background:#eaf6f9; padding:2rem; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+        <h3 style="color:#0077b6;">Neurology</h3>
+        <p>Specialized care for brain and nervous system disorders.</p>
+      </li>
+      <li style="background:#eaf6f9; padding:2rem; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+        <h3 style="color:#0077b6;">Orthopedics</h3>
+        <p>Comprehensive care for bones, joints, and muscles.</p>
+      </li>
+      <li style="background:#eaf6f9; padding:2rem; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+        <h3 style="color:#0077b6;">Oncology</h3>
+        <p>Specialized cancer treatment and care, including surgery and chemotherapy.</p>
+      </li>
+    </ul>
+  </section>
+
+  <footer style="background:#0077b6; color:white; text-align:center; padding:1rem;">
+    &copy; 2025 LifeCare Hospital. All rights reserved by Ankit.
+  </footer>
+  <script>
+    function toggleMenu() {
+        document.getElementById("navLinks").classList.toggle("show");
+    }
+</script>
+
+</body>
+</html>

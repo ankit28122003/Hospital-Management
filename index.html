@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LifeCare Hospital</title>
+    <style>
+        nav {
+            background: #0077b6;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+                margin-top: 1rem;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links li {
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+
+<body style="margin:0; font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#f4f8fb; color:#333;">
+
+    <!-- Navbar -->
+    <nav>
+        <div class="brand">LifeCare</div>
+        <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="department.html">Departments</a></li>
+            <li><a href="doctors.html">Doctors</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home"
+        style="position:relative; padding:6rem 2rem; text-align:center; color:white; background:url(Hospital.jpg) center/cover no-repeat; min-height:70vh;">
+        <div
+            style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0, 119, 182, 0.4); z-index:0;">
+        </div>
+        <div style="position:relative; z-index:1;">
+            <h1 style="font-size:2.8rem; margin-bottom:1rem;">Welcome to LifeCare Hospital</h1>
+            <p style="font-size:1.2rem; margin-bottom:2rem;">Caring for Life with Compassion & Excellence</p>
+            <a href="#appointments"
+                style="background:#023e8a; color:white; padding:0.75rem 1.5rem; border-radius:5px; text-decoration:none; font-size:1rem;">Book
+                Appointment</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <a href="about.html" style="text-decoration: none; color: #333;">
+        <section id="about" style="padding:4rem 2rem; background:white; text-align:center;">
+            <h2 style="color:#0077b6;">About Us</h2>
+            <p style="max-width:700px; margin:1rem auto;">LifeCare Hospital is dedicated to providing top-quality
+                healthcare
+                services using the latest medical advancements and compassionate care. Our team of professionals is
+                committed to your health and well-being.</p>
+        </section>
+    </a>
+
+    <!-- Services Section -->
+    <a href="services.html" style="text-decoration: none; color: #333;">
+        <section id="services" style="padding:4rem 2rem; background:#eaf6f9; text-align:center;">
+            <h2 style="color:#0077b6;">Our Services</h2>
+            <p>Emergency Care, Diagnostics, Surgery, Maternity, Pediatrics, Pharmacy, and more.</p>
+        </section>
+    </a>
+
+    <!-- Departments Section -->
+    <a href="department.html" style="text-decoration: none; color: #333;">
+        <section id="departments" style="padding:4rem 2rem; background:white; text-align:center;">
+            <h2 style="color:#0077b6;">Departments</h2>
+            <p>Cardiology, Neurology, Orthopedics, Oncology, ENT, Dermatology, and others.</p>
+        </section>
+    </a>
+
+    <!-- Doctors Section -->
+    <a href="doctors.html" style="text-decoration: none; color: #333;">
+        <section id="doctors" style="padding:4rem 2rem; background:#eaf6f9; text-align:center;">
+            <h2 style="color:#0077b6;">Our Doctors</h2>
+            <p>Meet our highly experienced and dedicated team of healthcare professionals.</p>
+        </section>
+    </a>
+
+    <!-- Appointment Section -->
+    <a href="appointments.html" style="text-decoration: none; color: #333;">
+        <section id="appointments" style="padding:4rem 2rem; background:white; text-align:center;">
+            <h2 style="color:#0077b6;">Book an Appointment</h2>
+            <form action="https://formspree.io/f/xyzeowzl" method="POST"
+                style="max-width:600px; margin:0 auto; background:#f0f8ff; padding:2rem; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                <label for="name" style="display:block; margin-bottom:0.5rem;">Your Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name"
+                    style="width:100%; padding:0.8rem; margin-bottom:1rem; border-radius:5px; border:1px solid #ccc;"
+                    required />
+
+                <label for="email" style="display:block; margin-bottom:0.5rem;">Your Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address"
+                    style="width:100%; padding:0.8rem; margin-bottom:1rem; border-radius:5px; border:1px solid #ccc;"
+                    required />
+
+                <label for="doctor" style="display:block; margin-bottom:0.5rem;">Select Doctor:</label>
+                <select id="doctor" name="doctor"
+                    style="width:100%; padding:0.8rem; margin-bottom:1rem; border-radius:5px; border:1px solid #ccc;"
+                    required>
+                    <option value="Dr. John Doe">Dr. John Doe (Cardiologist)</option>
+                    <option value="Dr. Jane Smith">Dr. Jane Smith (Neurologist)</option>
+                    <option value="Dr. Sam Wilson">Dr. Sam Wilson (Orthopedic Surgeon)</option>
+                    <option value="Dr. Alice Brown">Dr. Alice Brown (Oncologist)</option>
+                </select>
+
+                <label for="date" style="display:block; margin-bottom:0.5rem;">Preferred Date:</label>
+                <input type="date" id="date" name="date"
+                    style="width:100%; padding:0.8rem; margin-bottom:1rem; border-radius:5px; border:1px solid #ccc;"
+                    required />
+
+                <a href="Thankyou.html"> <button type="submit"
+                        style="background:#0077b6; color:white; padding:0.8rem 2rem; border:none; border-radius:5px; font-size:1rem; cursor:pointer;">Book
+                        Appointment</button></a>
+            </form>
+        </section>
+    </a>
+
+    <!-- Contact Section -->
+    <a href="contact.html" style="text-decoration: none; color: #333;">
+        <section id="contact" style="padding:4rem 2rem; background:#eaf6f9; text-align:center;">
+            <h2 style="color:#0077b6;">Contact Us</h2>
+            <p>Email: iankit.chourasia@gmail.com | Phone: +91 9748124534</p>
+            <p>Address: 123 Health Street, Wellness City, Country(Random given)</p>
+        </section>
+    </a>
+
+    <!-- Footer -->
+    <footer style="background:#0077b6; color:white; text-align:center; padding:1rem;">
+        &copy; 2025 LifeCare Hospital. All rights reserved by Ankit.
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("navLinks").classList.toggle("show");
+        }
+    </script>
+</body>
+
+</html>
