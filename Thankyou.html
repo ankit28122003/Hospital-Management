@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Thank You</title>
@@ -52,8 +53,129 @@
       background-color: #023e8a;
     }
   </style>
+  <script>
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.continuous = true;
+
+    function speak(text) {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+      synth.speak(utterance);
+    }
+
+    function setField(fieldName, value) {
+      const fields = document.querySelectorAll("input, textarea, select");
+      let found = false;
+
+      fields.forEach(field => {
+        const fieldLower = field.name.toLowerCase();
+        if (
+          fieldLower.includes(fieldName) ||
+          field.id.toLowerCase().includes(fieldName) ||
+          field.placeholder.toLowerCase().includes(fieldName)
+        ) {
+          if (field.type === "date") {
+            const parsedDate = new Date(value);
+            if (!isNaN(parsedDate)) {
+              const isoDate = parsedDate.toISOString().split("T")[0];
+              field.value = isoDate;
+              speak(`Set date to ${isoDate}`);
+              found = true;
+            }
+          } else if (field.tagName === "SELECT") {
+            const options = Array.from(field.options);
+            const match = options.find(opt => opt.textContent.toLowerCase().includes(value.toLowerCase()));
+            if (match) {
+              field.value = match.value;
+              speak(`Doctor ${match.textContent} selected`);
+              found = true;
+            }
+          } else {
+            field.value = value;
+            speak(`Set ${fieldName} to ${value}`);
+            found = true;
+          }
+        }
+      });
+
+      if (!found) {
+        speak(`Sorry, I could not find a field named ${fieldName}`);
+      }
+    }
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+      console.log("Heard:", transcript);
+
+      // 🔹 NAVIGATION
+      if (transcript.includes("go to home")) {
+        speak("Opening home page");
+        setTimeout(() => window.location.href = "index.html", 1500);
+      } else if (transcript.includes("open about")) {
+        speak("Opening about page");
+        setTimeout(() => window.location.href = "about.html", 1500);
+      } else if (transcript.includes("open services")) {
+        speak("Opening services page");
+        setTimeout(() => window.location.href = "services.html", 1500);
+      } else if (transcript.includes("open departments")) {
+        speak("Opening departments page");
+        setTimeout(() => window.location.href = "departments.html", 1500);
+      } else if (transcript.includes("open doctors")) {
+        speak("Opening doctors page");
+        setTimeout(() => window.location.href = "doctors.html", 1500);
+      } else if (transcript.includes("book appointment")) {
+        speak("Opening appointment form");
+        setTimeout(() => window.location.href = "appointment.html", 1500);
+      } else if (transcript.includes("contact hospital")) {
+        speak("Opening contact page");
+        setTimeout(() => window.location.href = "contact.html", 1500);
+      }
+
+      // 🔹 SCROLL
+      else if (transcript.includes("scroll down")) {
+        window.scrollBy(0, 500);
+        speak("Scrolling down");
+      } else if (transcript.includes("scroll up")) {
+        window.scrollBy(0, -500);
+        speak("Scrolling up");
+      }
+
+      // 🔹 FORM SUBMIT
+      else if (transcript.includes("submit form")) {
+        speak("Submitting the form");
+        document.querySelector("form")?.submit();
+      }
+
+      // 🔹 FIELD FILLING
+      else if (transcript.match(/(enter|set|select) (\w+) (to )?(.+)/)) {
+        const match = transcript.match(/(enter|set|select) (\w+) (to )?(.+)/);
+        const fieldName = match[2];
+        const value = match[4];
+        setField(fieldName, value);
+      }
+
+      // 🔹 Unknown
+      else {
+        speak("Sorry, I didn’t understand that.");
+      }
+    };
+
+    function startListening() {
+      speak("Voice control activated. You can speak commands like go to home, set name, or submit form.");
+      recognition.start();
+    }
+
+    function stopListening() {
+      speak("Voice control deactivated.");
+      recognition.stop();
+    }
+  </script>
+
+
 </head>
-<body>
+
+<body onload="startListening()">
   <div class="thankyou-box">
     <h1>Thank You!</h1>
     <p>Your appointment request has been received.</p>
@@ -61,4 +183,5 @@
     <a href="index.html" class="home-button">Back to Home</a>
   </div>
 </body>
+
 </html>

@@ -1,104 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact - LifeCare Hospital</title>
-  <style>
-    nav {
-        background: #0077b6;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - LifeCare Hospital</title>
+    <style>
+        nav {
+            background: #0077b6;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    .brand {
-        color: white;
-        font-size: 1.8rem;
-        font-weight: bold;
-    }
+        .brand {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-    .nav-toggle {
-        display: none;
-        font-size: 1.8rem;
-        color: white;
-        cursor: pointer;
-        background: none;
-        border: none;
-    }
-
-    .nav-links {
-        list-style: none;
-        display: flex;
-        gap: 1rem;
-        margin: 0;
-        padding: 0;
-    }
-
-    .nav-links a {
-        color: white;
-        text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
         .nav-toggle {
-            display: block;
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
         }
 
         .nav-links {
-            flex-direction: column;
-            width: 100%;
-            display: none;
-            margin-top: 1rem;
-        }
-
-        .nav-links.show {
+            list-style: none;
             display: flex;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
         }
 
-        .nav-links li {
-            text-align: center;
-            padding: 0.5rem 0;
+        .nav-links a {
+            color: white;
+            text-decoration: none;
         }
-    }
-</style>
-</head>
-<body style="margin:0; font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#f4f8fb; color:#333;">
 
-  <!-- Navbar -->
-  <nav>
-    <div class="brand">LifeCare</div>
-    <button class="nav-toggle" onclick="toggleMenu()">☰</button>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="department.html">Departments</a></li>
-        <li><a href="doctors.html">Doctors</a></li>
-        <li><a href="appointments.html">Appointments</a></li>
-        <li><a href="contact.html">Contact</a></li>
-    </ul>
-</nav>
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
 
-  <!-- Contact Content -->
-  <section style="padding:4rem 2rem; background:white; text-align:center;">
-    <h2 style="color:#0077b6;">Contact Us</h2>
-    <p>If you have any questions or inquiries, feel free to reach out to us:</p>
-    <p><strong>Email:</strong> iankit.chourasia@gmail.com</p>
-    <p><strong>Phone:</strong> +91 9748124534</p>
-    <p><strong>Address:</strong> 123 Hospital St., City, Country(Random)</p>
-  </section>
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+                margin-top: 1rem;
+            }
 
-  <footer style="background:#0077b6; color:white; text-align:center; padding:1rem;">
-    &copy; 2025 LifeCare Hospital. All rights reserved by Ankit.
-  </footer>
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links li {
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+        }
+    </style>
   <script>
-    function toggleMenu() {
-        document.getElementById("navLinks").classList.toggle("show");
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.continuous = true;
+  
+    function speak(text) {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        synth.speak(utterance);
     }
-</script>
+  
+    function speakAndNavigate(text, url) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.onend = () => {
+            window.location.href = url;
+        };
+        speechSynthesis.speak(utterance);
+    }
+  
+    function setField(fieldName, value) {
+        const fields = document.querySelectorAll("input, textarea, select");
+        let found = false;
+  
+        fields.forEach(field => {
+            const fieldLower = field.name.toLowerCase();
+            if (
+                fieldLower.includes(fieldName) ||
+                field.id.toLowerCase().includes(fieldName) ||
+                field.placeholder.toLowerCase().includes(fieldName)
+            ) {
+                if (field.type === "date") {
+                    const parsedDate = new Date(value);
+                    if (!isNaN(parsedDate)) {
+                        const isoDate = parsedDate.toISOString().split("T")[0];
+                        field.value = isoDate;
+                        speak(`Set date to ${isoDate}`);
+                        found = true;
+                    }
+                } else if (field.tagName === "SELECT") {
+                    const options = Array.from(field.options);
+                    const match = options.find(opt => opt.textContent.toLowerCase().includes(value.toLowerCase()));
+                    if (match) {
+                        field.value = match.value;
+                        speak(`Doctor ${match.textContent} selected`);
+                        found = true;
+                    }
+                } else {
+                    field.value = value;
+                    speak(`Set ${fieldName} to ${value}`);
+                    found = true;
+                }
+            }
+        });
+  
+        if (!found) {
+            speak(`Sorry, I could not find a field named ${fieldName}`);
+        }
+    }
+  
+    recognition.onresult = (event) => {
+        const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+        console.log("Heard:", transcript);
+  
+        // 🔹 NAVIGATION
+        if (transcript.includes("go to home")) {
+            speakAndNavigate("Opening home page", "index.html");
+        } else if (transcript.includes("open about")) {
+            speakAndNavigate("Opening about page", "about.html");
+        } else if (transcript.includes("open services")) {
+            speakAndNavigate("Opening services page", "services.html");
+        } else if (transcript.includes("open departments")) {
+            speakAndNavigate("Opening departments page", "department.html");
+        } else if (transcript.includes("open doctors")) {
+            speakAndNavigate("Opening doctors page", "doctors.html");
+        } else if (transcript.includes("book appointment")) {
+            speakAndNavigate("Opening appointment form", "appointments.html");
+        } else if (transcript.includes("contact hospital")) {
+            speakAndNavigate("Opening contact page", "contact.html");
+        }
+  
+        // 🔹 SCROLL
+        else if (transcript.includes("scroll down")) {
+            window.scrollBy(0, 500);
+            speak("Scrolling down");
+        } else if (transcript.includes("scroll up")) {
+            window.scrollBy(0, -500);
+            speak("Scrolling up");
+        }
+  
+        // 🔹 FORM SUBMIT
+        else if (transcript.includes("submit form")) {
+            speak("Submitting the form");
+            document.querySelector("form")?.submit();
+        }
+  
+        // 🔹 FORM FILLING
+        else if (transcript.match(/(enter|set|select) (\w+) (to )?(.+)/)) {
+            const match = transcript.match(/(enter|set|select) (\w+) (to )?(.+)/);
+            const fieldName = match[2];
+            const value = match[4];
+            setField(fieldName, value);
+        }
+  
+        // 🔹 Unknown command
+        else {
+            speak("Sorry, I didn’t understand that.");
+        }
+    };
+  
+    function startListening() {
+        speak("Voice control activated. You can speak commands like go to home, set name, or submit form.");
+        recognition.start();
+    }
+  
+    function stopListening() {
+        speak("Voice control deactivated.");
+        recognition.stop();
+    }
+  </script>
+  
+
+</head>
+
+<body onload="startListening()"
+    style="margin:0; font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#f4f8fb; color:#333;">
+
+    <!-- Navbar -->
+    <nav>
+        <div class="brand">LifeCare</div>
+        <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="department.html">Departments</a></li>
+            <li><a href="doctors.html">Doctors</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contact Content -->
+    <section style="padding:4rem 2rem; background:white; text-align:center;">
+        <h2 style="color:#0077b6;">Contact Us</h2>
+        <p>If you have any questions or inquiries, feel free to reach out to us:</p>
+        <p><strong>Email:</strong> iankit.chourasia@gmail.com</p>
+        <p><strong>Phone:</strong> +91 9748124534</p>
+        <p><strong>Address:</strong> 123 Hospital St., City, Country(Random)</p>
+    </section>
+
+    <footer style="background:#0077b6; color:white; text-align:center; padding:1rem;">
+        &copy; 2025 LifeCare Hospital. All rights reserved by Ankit.
+    </footer>
+    <script>
+        function toggleMenu() {
+            document.getElementById("navLinks").classList.toggle("show");
+        }
+    </script>
 
 </body>
+
 </html>
